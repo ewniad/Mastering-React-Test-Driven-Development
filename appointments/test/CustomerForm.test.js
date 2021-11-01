@@ -10,6 +10,27 @@ describe('CustomerForm', () => {
     ({ render, container } = createContainer());
   });
 
+  const spy = () => {
+    let receivedArguments;
+    return {
+      fn: (...args) => (receivedArguments = args),
+      receivedArguments: () => receivedArguments,
+      receivedArgument: n => receivedArguments[n]
+    };
+  };
+
+  expect.extend({
+    toHaveBeenCalled(received) {
+      if (received.receivedArguments() === undefined) {
+        return {
+          pass: false,
+          message: () => 'Spy was not called.'
+        };
+      }
+      return { pass: true, message: () => 'Spy was called.' };
+    }
+  });
+
   const form = id => container.querySelector(`form[id="${id}"]`);
   const field = name => form('customer').elements[name];
   const labelFor = formElement =>
@@ -81,16 +102,21 @@ describe('CustomerForm', () => {
   });
 
   const itSubmitsExistingValue = (fieldName, value) =>
-    it.only('saves existing value when submitted', async () => {
+    it('saves existing value when submitted', async () => {
       const submitSpy = spy();
-      render(<CustomerForm
-        { ...{[fieldName]: 'value'}}
-        onSubmit={submitSpy.fn}
-      />);
-      ReactTestUtils.Simulate.submit(form('customer'));
-      expect(submitSpy.receiveArguments()).toBeDefined();
+
+      render(
+        <CustomerForm
+          {...{ [fieldName]: value }}
+          onSubmit={submitSpy.fn}
+        />
+      );
+
+      await ReactTestUtils.Simulate.submit(form('customer'));
       expect(submitSpy).toHaveBeenCalled();
-      expect(submitSpy.receiveArgument(0)[fieldName]).toEqual('value');
+      expect(submitSpy.receivedArgument(0)[fieldName]).toEqual(
+        value
+      );
     });
 
 
