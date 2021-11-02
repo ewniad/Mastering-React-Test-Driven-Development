@@ -5,30 +5,13 @@ import { CustomerForm } from '../src/CustomerForm';
 
 describe('CustomerForm', () => {
   let render, container;
+  const originalFetch = window.fetch;
+  let fetchSpy;
 
   beforeEach(() => {
     ({ render, container } = createContainer());
-  });
-
-  const spy = () => {
-    let receivedArguments;
-    return {
-      fn: (...args) => (receivedArguments = args),
-      receivedArguments: () => receivedArguments,
-      receivedArgument: n => receivedArguments[n]
-    };
-  };
-
-  expect.extend({
-    toHaveBeenCalled(received) {
-      if (received.receivedArguments() === undefined) {
-        return {
-          pass: false,
-          message: () => 'Spy was not called.'
-        };
-      }
-      return { pass: true, message: () => 'Spy was called.' };
-    }
+    fetchSpy = spy();
+    window.fetch = fetchSpy.fn;
   });
 
   const form = id => container.querySelector(`form[id="${id}"]`);
@@ -98,6 +81,44 @@ describe('CustomerForm', () => {
       );
     });
 
+  //itSubmitsExistingValue('firstName', 'value');
+
+  const spy = () => {
+    let receivedArguments;
+    return {
+      fn: (...args) => (receivedArguments = args),
+      receivedArguments: () => receivedArguments,
+      receivedArgument: n => receivedArguments[n]
+    };
+  };
+
+
+  expect.extend({
+    toHaveBeenCalled(received) {
+      if (received.receivedArguments() === undefined) {
+        return {
+          pass: false,
+          message: () => 'Spy was not called.'
+        };
+      }
+      return { pass: true, message: () => 'Spy was called.' };
+    }
+  });
+
+  it('p117', () => {
+    render(<CustomerForm fetch={fetchSpy.fn}/>);
+    ReactTestUtils.Simulate.submit(form('customer'));
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(fetchSpy.receivedArgument(0)).toEqual('/customers');
+
+    const fetchOpts = fetchSpy.receivedArgument(1);
+    expect(fetchOpts.method).toEqual('POST');
+    expect(fetchOpts.credentials).toEqual('same-origin');
+    expect(fetchOpts.headers).toEqual({
+      'Content-Type': 'application/json'
+    });
+  });
+
   const itSubmitsNewValue = (fieldName, value) =>
     it('saves new value when submitted', async () => {
       expect.hasAssertions();
@@ -115,7 +136,8 @@ describe('CustomerForm', () => {
       await ReactTestUtils.Simulate.submit(form('customer'));
     });
 
-  describe('first name field', () => {
+    /*
+  describe.skip('first name field', () => {
     itRendersAsATextBox('firstName');
     itIncludesTheExistingValue('firstName');
     itRendersALabel('firstName', 'First name');
@@ -124,7 +146,7 @@ describe('CustomerForm', () => {
     itSubmitsNewValue('firstName', 'newValue');
   });
 
-  describe('last name field', () => {
+  describe.skip('last name field', () => {
     itRendersAsATextBox('lastName');
     itIncludesTheExistingValue('lastName');
     itRendersALabel('lastName', 'Last name');
@@ -133,7 +155,7 @@ describe('CustomerForm', () => {
     itSubmitsNewValue('lastName', 'newValue');
   });
 
-  describe('phone number field', () => {
+  describe.skip('phone number field', () => {
     itRendersAsATextBox('phoneNumber');
     itIncludesTheExistingValue('phoneNumber');
     itRendersALabel('phoneNumber', 'Phone number');
@@ -141,4 +163,6 @@ describe('CustomerForm', () => {
     itSubmitsExistingValue('phoneNumber', '12345');
     itSubmitsNewValue('phoneNumber', '67890');
   });
+  */
+
 });
