@@ -2,21 +2,32 @@ import React from 'react';
 import ReactTestUtils, { act } from 'react-dom/test-utils';
 import { createContainer } from './domManipulators';
 import { CustomerForm } from '../src/CustomerForm';
+import {
+  fetchResponseOk,
+  fetchResponseError,
+  RequestBodyOf
+  } from './spyHelpers';
+import 'whatwg-fetch';
 
 describe('CustomerForm', () => {
-  const originalFetch = window.fetch;
-  let render, container;
-  let fetchSpy;
+  let render, container, form, field, labelFor, element;
 
   beforeEach(() => {
-    ({ render, container } = createContainer());
-    fetchSpy = spy();
-    window.fetch = fetchSpy.fn;
-    fetchSpy.stubReturnValue(fetchResponseOk({}));
+    ({
+      render,
+      container,
+      form,
+      field,
+      labelFor,
+      element
+    } = createContainer());
+    jest
+      .spyOn(window, 'fetch')
+      .mockReturnValue(fetchResponseOk({}));
   });
 
   afterEach(() => {
-    window.fetch = originalFetch;
+    window.fetch.mockRestore();
   });
 
   const spy = () => {
@@ -32,31 +43,6 @@ describe('CustomerForm', () => {
       stubReturnValue: value => (returnValue = value)
     };
   };
-
-  const fetchResponseOk = body =>
-    Promise.resolve({
-      ok: true,
-      json: () => Promise.resolve(body)
-    });
-
-  const fetchResponseError = () => Promise.resolve({ ok: false });
-
-  expect.extend({
-    toHaveBeenCalled(received) {
-      if (received.receivedArguments() === undefined) {
-        return {
-          pass: false,
-          message: () => 'Spy was not called.'
-        };
-      }
-      return { pass: true, message: () => 'Spy was called.' };
-    }
-  });
-
-  const form = id => container.querySelector(`form[id="${id}"]`);
-  const field = name => form('customer').elements[name];
-  const labelFor = formElement =>
-    container.querySelector(`label[for="${formElement}"]`);
 
   it('renders a form', () => {
     render(<CustomerForm />);
@@ -74,36 +60,34 @@ describe('CustomerForm', () => {
   it('calls fetch with the right properties when submitting data', async () => {
     render(<CustomerForm />);
     ReactTestUtils.Simulate.submit(form('customer'));
-    expect(fetchSpy).toHaveBeenCalled();
-    expect(fetchSpy.receivedArgument(0)).toEqual('/customers');
-
-    const fetchOpts = fetchSpy.receivedArgument(1);
-    expect(fetchOpts.method).toEqual('POST');
-    expect(fetchOpts.credentials).toEqual('same-origin');
-    expect(fetchOpts.headers).toEqual({
-      'Content-Type': 'application/json'
-    });
+    expect(fetchSpy).toHaveBeenCalledWith(
+      '/customers',
+      expect.objectContaining({
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+      })
+    );
   });
 
   it('notifies onSave when form is submitted', async () => {
     const customer = { id: 123 };
-    fetchSpy.stubReturnValue(fetchResponseOk(customer));
-    const saveSpy = spy();
+    fetchSpy.mockReturnValue(fetchResponseOk(customer));
+    const saveSpy = jest.fn();
 
-    render(<CustomerForm onSave={saveSpy.fn} />);
+    render(<CustomerForm onSave={saveSpy} />);
     await act(async () => {
       ReactTestUtils.Simulate.submit(form('customer'));
     });
 
-    expect(saveSpy).toHaveBeenCalled();
-    expect(saveSpy.receivedArgument(0)).toEqual(customer);
+    expect(saveSpy).toHaveBeenCalledWith(customer);
   });
 
   it('does not notify onSave if the POST request returns an error', async () => {
-    fetchSpy.stubReturnValue(fetchResponseError());
-    const saveSpy = spy();
+    fetchSpy.mockReturnValue(fetchResponseError());
+    const saveSpy = jest.fn();
 
-    render(<CustomerForm onSave={saveSpy.fn} />);
+    render(<CustomerForm onSave={saveSpy} />);
     await act(async () => {
       ReactTestUtils.Simulate.submit(form('customer'));
     });
@@ -112,12 +96,13 @@ describe('CustomerForm', () => {
   });
 
   it('prevents the default action when submitting the form', async () => {
-    const preventDefaultSpy = spy();
+    //const preventDefaultSpy = spy();
+    const preventDefaultSpy = jest.fn();
 
     render(<CustomerForm />);
     await act(async () => {
       ReactTestUtils.Simulate.submit(form('customer'), {
-        preventDefault: preventDefaultSpy.fn
+        preventDefault: preventDefaultSpy
       });
     });
 
@@ -144,9 +129,9 @@ describe('CustomerForm', () => {
   };
 
   const itRendersAsATextBox = fieldName =>
-    it('renders as a text box', () => {
+    it.only('renders as a text box', () => {
       render(<CustomerForm />);
-      expectToBeInputFieldOfTypeText(field(fieldName));
+      expectToBeInputFieldOfTypeText(field('customer',fieldName));
     });
 
   const itIncludesTheExistingValue = fieldName =>
@@ -167,15 +152,15 @@ describe('CustomerForm', () => {
       render(<CustomerForm />);
       expect(field(fieldName).id).toEqual(fieldName);
     });
+  
 
   const itSubmitsExistingValue = (fieldName, value) =>
-    it('saves existing value when submitted', async () => {
+    it.only('saves existing value when submitted', async () => {
       render(<CustomerForm {...{ [fieldName]: value }} />);
-
       ReactTestUtils.Simulate.submit(form('customer'));
-
-      const fetchOpts = fetchSpy.receivedArgument(1);
-      expect(JSON.parse(fetchOpts.body)[fieldName]).toEqual(value);
+      expect(RequestBodyOf(window.fetch)).toMatchObject({
+        [fieldName]: 'value'
+      });
     });
 
   const itSubmitsNewValue = (fieldName, value) =>
@@ -187,12 +172,12 @@ describe('CustomerForm', () => {
         target: { value, name: fieldName }
       });
       ReactTestUtils.Simulate.submit(form('customer'));
-
-      const fetchOpts = fetchSpy.receivedArgument(1);
-      expect(JSON.parse(fetchOpts.body)[fieldName]).toEqual(value);
+      expect(RequestBodyOf(window.fetch)).toMatchObject({
+        [fieldName]: 'newValue'
+      });
     });
 
-  describe('first name field', () => {
+  describe.only('first name field', () => {
     itRendersAsATextBox('firstName');
     itIncludesTheExistingValue('firstName');
     itRendersALabel('firstName', 'First name');
@@ -201,6 +186,7 @@ describe('CustomerForm', () => {
     itSubmitsNewValue('firstName', 'newValue');
   });
 
+  /*
   describe('last name field', () => {
     itRendersAsATextBox('lastName');
     itIncludesTheExistingValue('lastName');
@@ -218,4 +204,6 @@ describe('CustomerForm', () => {
     itSubmitsExistingValue('phoneNumber', '12345');
     itSubmitsNewValue('phoneNumber', '67890');
   });
+  */
+
 });
