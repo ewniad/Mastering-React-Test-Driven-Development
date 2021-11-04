@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactTestUtils, { act } from 'react-dom/test-utils';
-import { createContainer } from './domManipulators';
+import { createContainer, withEvent } from './domManipulators';
 import { CustomerForm } from '../src/CustomerForm';
 import {
   fetchResponseOk,
@@ -10,7 +10,7 @@ import {
 import 'whatwg-fetch';
 
 describe('CustomerForm', () => {
-  let render, container, form, field, labelFor, element;
+  let render, container, form, field, labelFor, element, change, submit;
 
   beforeEach(() => {
     ({
@@ -19,8 +19,11 @@ describe('CustomerForm', () => {
       form,
       field,
       labelFor,
-      element
+      element,
+      change,
+      submit
     } = createContainer());
+
     jest
       .spyOn(window, 'fetch')
       .mockReturnValue(fetchResponseOk({}));
@@ -129,7 +132,7 @@ describe('CustomerForm', () => {
   };
 
   const itRendersAsATextBox = fieldName =>
-    it.only('renders as a text box', () => {
+    it('renders as a text box', () => {
       render(<CustomerForm />);
       expectToBeInputFieldOfTypeText(field('customer',fieldName));
     });
@@ -155,7 +158,7 @@ describe('CustomerForm', () => {
   
 
   const itSubmitsExistingValue = (fieldName, value) =>
-    it.only('saves existing value when submitted', async () => {
+    it('saves existing value when submitted', async () => {
       render(<CustomerForm {...{ [fieldName]: value }} />);
       ReactTestUtils.Simulate.submit(form('customer'));
       expect(RequestBodyOf(window.fetch)).toMatchObject({
@@ -164,13 +167,21 @@ describe('CustomerForm', () => {
     });
 
   const itSubmitsNewValue = (fieldName, value) =>
-    it('saves new value when submitted', async () => {
+    it.only('saves new value when submitted', async () => {
       render(
         <CustomerForm {...{ [fieldName]: 'existingValue' }} />
       );
-      ReactTestUtils.Simulate.change(field(fieldName), {
+
+      /*
+      ReactTestUtils.Simulate.change(field('customer', fieldName), {
         target: { value, name: fieldName }
       });
+     change(field('customer', fieldName), {
+        target: { value, name: fieldName }
+     });
+      */
+     change(field('customer', fieldName), withEvent(fieldName, 'newValue'));
+
       ReactTestUtils.Simulate.submit(form('customer'));
       expect(RequestBodyOf(window.fetch)).toMatchObject({
         [fieldName]: 'newValue'
