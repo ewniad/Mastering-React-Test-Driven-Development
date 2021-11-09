@@ -93,7 +93,7 @@ describe('AppointmentForm', () => {
     expect(saveSpy).toHaveBeenCalled();
   });
 
-  it.only('does not notify onSave if the POST request returns an error', async () => {
+  it('does not notify onSave if the POST request returns an error', async () => {
     window.fetch.mockReturnValue(fetchResponseError());
     const saveSpy = jest.fn();
 
@@ -104,10 +104,11 @@ describe('AppointmentForm', () => {
     expect(saveSpy).not.toHaveBeenCalled();
   });
 
-  it('prevents the default action when submitting the form', async () => {
+  it.only('prevents the default action when submitting the form', async () => {
     const preventDefaultSpy = jest.fn();
 
-    render(<AppointmentForm />);
+    //render(<AppointmentForm />);
+    render(<AppointmentForm customer={customer} />);
     await submit(form('appointment'), {
       preventDefault: preventDefaultSpy
     });
