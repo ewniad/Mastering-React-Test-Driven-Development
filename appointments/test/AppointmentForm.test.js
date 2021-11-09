@@ -415,7 +415,7 @@ describe('AppointmentForm', () => {
       expect(startsAtField(0).checked).toEqual(true);
     });
 
-    it.only('saves existing value when submitted', async () => {
+    it('saves existing value when submitted', async () => {
       render(
         <AppointmentForm
           availableTimeSlots={availableTimeSlots}
@@ -431,12 +431,13 @@ describe('AppointmentForm', () => {
       });
     });
 
-    it('saves new value when submitted', async () => {
+    it.only('saves new value when submitted', async () => {
       render(
         <AppointmentForm
           availableTimeSlots={availableTimeSlots}
           today={today}
           startsAt={availableTimeSlots[0].startsAt}
+          customer={customer}
         />
       );
       change(
