@@ -116,7 +116,7 @@ describe('AppointmentForm', () => {
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
 
-  it.only('renders error message when fetch call fails', async () => {
+  it('renders error message when fetch call fails', async () => {
     window.fetch.mockReturnValue(fetchResponseError());
 
     //render(<AppointmentForm />);
@@ -129,11 +129,12 @@ describe('AppointmentForm', () => {
     );
   });
 
-  it('clears error message when fetch call succeeds', async () => {
+  it.only('clears error message when fetch call succeeds', async () => {
     window.fetch.mockReturnValueOnce(fetchResponseError());
     window.fetch.mockReturnValue(fetchResponseOk());
 
-    render(<AppointmentForm />);
+    //render(<AppointmentForm />);
+    render(<AppointmentForm customer={customer} />);
     await submit(form('appointment'));
     await submit(form('appointment'));
 
