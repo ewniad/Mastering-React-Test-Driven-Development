@@ -9,6 +9,7 @@ import { createContainer, withEvent } from './domManipulators';
 import { AppointmentForm } from '../src/AppointmentForm';
 
 describe('AppointmentForm', () => {
+  const customer = { id: 123 };
   let render,
     container,
     form,
@@ -63,8 +64,11 @@ describe('AppointmentForm', () => {
     expect(submitButton).not.toBeNull();
   });
 
-  it('calls fetch with the right properties when submitting data', async () => {
-    render(<AppointmentForm />);
+
+
+  it.only('calls fetch with the right properties when submitting data', async () => {
+    //render(<AppointmentForm />);
+    render(<AppointmentForm customer={customer} />);
     await submit(form('appointment'));
     expect(window.fetch).toHaveBeenCalledWith(
       '/appointments',
@@ -75,6 +79,7 @@ describe('AppointmentForm', () => {
       })
     );
   });
+
 
   it('notifies onSave when form is submitted', async () => {
     const appointment = { id: 123 };
@@ -130,6 +135,16 @@ describe('AppointmentForm', () => {
 
     expect(element('.error')).toBeNull();
   });
+
+  it('passes the customer id to fetch when submitting', async () => {
+    const customer = { id: 123 };
+    render(<AppointmentForm customer={customer} />);
+    await submit(form('appointment'));
+    expect(requestBodyOf(window.fetch)).toMatchObject({
+      customer: customer.id
+    });
+  });
+
 
   const itRendersAsASelectBox = fieldName => {
     it('renders as a select box', () => {
