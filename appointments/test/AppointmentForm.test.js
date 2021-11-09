@@ -322,7 +322,7 @@ describe('AppointmentForm', () => {
 
   const timeSlotTable = () => element('table#time-slots');
 
-  describe.only('time slot table', () => {
+  describe('time slot table', () => {
     const today = new Date();
     const availableTimeSlots = [
       { startsAt: today.setHours(9, 0, 0, 0) },
@@ -431,7 +431,7 @@ describe('AppointmentForm', () => {
       });
     });
 
-    it.only('saves new value when submitted', async () => {
+    it('saves new value when submitted', async () => {
       render(
         <AppointmentForm
           availableTimeSlots={availableTimeSlots}
