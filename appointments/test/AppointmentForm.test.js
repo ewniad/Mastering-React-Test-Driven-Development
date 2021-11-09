@@ -208,7 +208,7 @@ describe('AppointmentForm', () => {
   };
 
   const itSubmitsExistingValue = (fieldName, props) => {
-    it.only('saves existing value when submitted', async () => {
+    it('saves existing value when submitted', async () => {
       render(
         <AppointmentForm
           {...props}
@@ -225,11 +225,12 @@ describe('AppointmentForm', () => {
   };
 
   const itSubmitsNewValue = (fieldName, props) => {
-    it('saves new value when submitted', async () => {
+    it.only('saves new value when submitted', async () => {
       render(
         <AppointmentForm
           {...props}
           {...{ [fieldName]: 'existingValue' }}
+          customer={customer}
         />
       );
       change(
