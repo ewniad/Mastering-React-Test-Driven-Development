@@ -11,7 +11,7 @@ describe('AppointmentFormLoader', () => {
 	let renderAndWait, render, container;
 
 	const today = new Date();
-	const availableTimeSolts = [
+	const availableTimeSlots = [
 		{ startsAt: today.setHours(9, 0, 0, 0) }
 	];
 
@@ -19,7 +19,7 @@ describe('AppointmentFormLoader', () => {
 		({ renderAndWait, render, container } = createContainer());
 		jest
 			.spyOn(window, 'fetch')
-			.mockReturnValue(fetchResponseOk(availableTimeSolts));
+			.mockReturnValue(fetchResponseOk(availableTimeSlots));
 		jest
 		.spyOn(AppointmentFormExports, 'AppointmentForm')
 		.mockReturnValue(null);
