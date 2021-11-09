@@ -129,7 +129,7 @@ describe('AppointmentForm', () => {
     );
   });
 
-  it.only('clears error message when fetch call succeeds', async () => {
+  it('clears error message when fetch call succeeds', async () => {
     window.fetch.mockReturnValueOnce(fetchResponseError());
     window.fetch.mockReturnValue(fetchResponseOk());
 
@@ -208,11 +208,12 @@ describe('AppointmentForm', () => {
   };
 
   const itSubmitsExistingValue = (fieldName, props) => {
-    it('saves existing value when submitted', async () => {
+    it.only('saves existing value when submitted', async () => {
       render(
         <AppointmentForm
           {...props}
           {...{ [fieldName]: 'value' }}
+          customer={customer}
         />
       );
       await submit(form('appointment'));
@@ -243,7 +244,7 @@ describe('AppointmentForm', () => {
     });
   };
 
-  describe('service field', () => {
+  describe.only('service field', () => {
     itRendersAsASelectBox('service');
     itInitiallyHasABlankValueChosen('service');
     itPreselectsExistingValue(
