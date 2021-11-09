@@ -225,7 +225,7 @@ describe('AppointmentForm', () => {
   };
 
   const itSubmitsNewValue = (fieldName, props) => {
-    it.only('saves new value when submitted', async () => {
+    it('saves new value when submitted', async () => {
       render(
         <AppointmentForm
           {...props}
