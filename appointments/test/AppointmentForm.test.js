@@ -104,7 +104,7 @@ describe('AppointmentForm', () => {
     expect(saveSpy).not.toHaveBeenCalled();
   });
 
-  it.only('prevents the default action when submitting the form', async () => {
+  it('prevents the default action when submitting the form', async () => {
     const preventDefaultSpy = jest.fn();
 
     //render(<AppointmentForm />);
@@ -116,10 +116,11 @@ describe('AppointmentForm', () => {
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
 
-  it('renders error message when fetch call fails', async () => {
+  it.only('renders error message when fetch call fails', async () => {
     window.fetch.mockReturnValue(fetchResponseError());
 
-    render(<AppointmentForm />);
+    //render(<AppointmentForm />);
+    render(<AppointmentForm customer={customer} />);
     await submit(form('appointment'));
 
     expect(element('.error')).not.toBeNull();
