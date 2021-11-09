@@ -66,7 +66,7 @@ describe('AppointmentForm', () => {
 
 
 
-  it.only('calls fetch with the right properties when submitting data', async () => {
+  it('calls fetch with the right properties when submitting data', async () => {
     //render(<AppointmentForm />);
     render(<AppointmentForm customer={customer} />);
     await submit(form('appointment'));
@@ -81,12 +81,13 @@ describe('AppointmentForm', () => {
   });
 
 
-  it('notifies onSave when form is submitted', async () => {
+  it.only('notifies onSave when form is submitted', async () => {
     const appointment = { id: 123 };
     window.fetch.mockReturnValue(fetchResponseOk({}));
     const saveSpy = jest.fn();
 
-    render(<AppointmentForm onSave={saveSpy} />);
+    //render(<AppointmentForm onSave={saveSpy} />);
+    render(<AppointmentForm onSave={saveSpy} customer={customer} />);
     await submit(form('appointment'));
 
     expect(saveSpy).toHaveBeenCalled();
