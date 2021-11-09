@@ -30,8 +30,8 @@ describe('AppointmentFormLoader', () => {
     	AppointmentFormExports.AppointmentForm.mockRestore();
 	});
 
-	it('fetches data when component is mounted', () => {
-		render (<AppointmentFormLoader />);
+	it('fetches data when component is mounted', async () => {
+		await renderAndWait (<AppointmentFormLoader />);
 		expect(window.fetch).toHaveBeenCalledWith(
 			'/availableTimeSlots',
 			expect.objectContaining({
@@ -42,11 +42,11 @@ describe('AppointmentFormLoader', () => {
 		);
 	});
 
-	it('initially passes no data to AppointmentForm', () => {
-		render(<AppointmentFormLoader />);
+	it('initially passes no data to AppointmentForm', async () => {
+		await renderAndWait(<AppointmentFormLoader />);
 		expect(
 			AppointmentFormExports.AppointmentForm
-		).toHaveBeenLastCalledWith(
+		).toHaveBeenCalledWith(
 			{ availableTimeSlots: [] },
 			expect.anything()
 		);
