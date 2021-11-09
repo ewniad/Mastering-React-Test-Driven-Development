@@ -245,7 +245,7 @@ describe('AppointmentForm', () => {
     });
   };
 
-  describe.only('service field', () => {
+  describe('service field', () => {
     itRendersAsASelectBox('service');
     itInitiallyHasABlankValueChosen('service');
     itPreselectsExistingValue(
@@ -322,7 +322,7 @@ describe('AppointmentForm', () => {
 
   const timeSlotTable = () => element('table#time-slots');
 
-  describe('time slot table', () => {
+  describe.only('time slot table', () => {
     const today = new Date();
     const availableTimeSlots = [
       { startsAt: today.setHours(9, 0, 0, 0) },
@@ -415,12 +415,13 @@ describe('AppointmentForm', () => {
       expect(startsAtField(0).checked).toEqual(true);
     });
 
-    it('saves existing value when submitted', async () => {
+    it.only('saves existing value when submitted', async () => {
       render(
         <AppointmentForm
           availableTimeSlots={availableTimeSlots}
           today={today}
           startsAt={availableTimeSlots[0].startsAt}
+          customer={customer}
         />
       );
       await submit(form('appointment'));
@@ -485,4 +486,6 @@ describe('AppointmentForm', () => {
       ).toBeNull();
     });
   });
+
+
 });
