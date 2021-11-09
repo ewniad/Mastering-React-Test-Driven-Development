@@ -81,7 +81,7 @@ describe('AppointmentForm', () => {
   });
 
 
-  it.only('notifies onSave when form is submitted', async () => {
+  it('notifies onSave when form is submitted', async () => {
     const appointment = { id: 123 };
     window.fetch.mockReturnValue(fetchResponseOk({}));
     const saveSpy = jest.fn();
@@ -93,11 +93,12 @@ describe('AppointmentForm', () => {
     expect(saveSpy).toHaveBeenCalled();
   });
 
-  it('does not notify onSave if the POST request returns an error', async () => {
+  it.only('does not notify onSave if the POST request returns an error', async () => {
     window.fetch.mockReturnValue(fetchResponseError());
     const saveSpy = jest.fn();
 
-    render(<AppointmentForm onSave={saveSpy} />);
+    //render(<AppointmentForm onSave={saveSpy} />);
+    render(<AppointmentForm onSave={saveSpy} customer={customer} />);
     await submit(form('appointment'));
 
     expect(saveSpy).not.toHaveBeenCalled();
