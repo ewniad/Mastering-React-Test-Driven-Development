@@ -8,6 +8,7 @@ import {
 import { createContainer, withEvent } from './domManipulators';
 import { AppointmentForm } from '../src/AppointmentForm';
 
+
 describe('AppointmentForm', () => {
   let render,
     container,
@@ -51,7 +52,7 @@ describe('AppointmentForm', () => {
 
   const startsAtField = index =>
     elements(`input[name="startsAt"]`)[index];
-
+  
   it('renders a form', () => {
     render(<AppointmentForm />);
     expect(form('appointment')).not.toBeNull();
