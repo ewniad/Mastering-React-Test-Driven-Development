@@ -264,6 +264,11 @@ describe('CustomerForm', () => {
       'Last name is required'
     );
   });
+    itInvalidatesFieldWithValue(
+      'phoneNumber',
+      ' ',
+      'Phone number is required'
+    );
 
 });
 
