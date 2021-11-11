@@ -41,7 +41,14 @@ export const CustomerForm = ({
   const handleBlur = ({ target }) => {
     const validators = {
       firstName: required('First name is required'),
-      lastName:  required('Last name is required')
+      lastName:  required('Last name is required'),
+      phoneNumber: list(
+        required('Phone number is required'),
+        match(
+          /^[0-9+()\- ]*$/,
+          'Only numbers, spaces and these symbols are allowed: ( ) + -'
+        )
+      )
     };
     const result = validators[target.name](target.value);
     setValidationErrors({
