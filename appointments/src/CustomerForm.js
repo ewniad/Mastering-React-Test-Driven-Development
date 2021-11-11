@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 
-const required = value =>
-  !value || value.trim() === '' ? 'First name is required' : undefined;
+//const required = value =>
+  //!value || value.trim() === '' ? 'First name is required' : undefined;
+const required = description => value =>
+  !value || value.trim() === '' ? description : undefined;
 
 
 const Error = () => (
@@ -31,9 +33,8 @@ export const CustomerForm = ({
 
   const handleBlur = ({ target }) => {
     const validators = {
-      firstName: required
+      firstName: required('First name is required')
     };
-    //const result = required(target.value);
     const result = validators[target.name](target.value);
     setValidationErrors({
       ...validationErrors,
