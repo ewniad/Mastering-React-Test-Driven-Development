@@ -54,8 +54,8 @@ export const CustomerForm = ({
     }
   };
 
-  const hasFirstNameError = () =>
-    validationErrors.firstName !== undefined;
+  const hasFirstNameError = fieldName =>
+    validationErrors[fieldName] !== undefined;
 
   const renderFirstNameError = fieldName => {
     if (hasFirstNameError(fieldName)) {
