@@ -76,7 +76,7 @@ describe('CustomerForm', () => {
     window.fetch.mockReturnValue(fetchResponseOk(customer));
     const saveSpy = jest.fn();
 
-    render(<CustomerForm onSave={saveSpy} />);
+    render(<CustomerForm {...validCustomer} onSave={saveSpy} />);
     await submit(form('customer'));
 
     expect(saveSpy).toHaveBeenCalledWith(customer);
@@ -86,7 +86,7 @@ describe('CustomerForm', () => {
     window.fetch.mockReturnValue(fetchResponseError());
     const saveSpy = jest.fn();
 
-    render(<CustomerForm onSave={saveSpy} />);
+    render(<CustomerForm {...validCustomer} onSave={saveSpy} />);
     await submit(form('customer'));
 
     expect(saveSpy).not.toHaveBeenCalled();
