@@ -19,11 +19,8 @@ export const validateMany = (validators, fields) =>
     {}
   );
 
-/*
 export const hasError = (validationErrors, fieldName) =>
   validationErrors[fieldName] !== undefined;
 
 export const anyErrors = errors =>
   Object.values(errors).some(error => error !== undefined);
-*/
- 

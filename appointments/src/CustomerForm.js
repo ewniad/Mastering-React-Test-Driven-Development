@@ -3,7 +3,9 @@ import {
   required,
   match,
   list,
-  validateMany
+  validateMany,
+  hasError,
+  anyErrors
 } from './formValidation';
 
 const Error = () => (
@@ -53,21 +55,6 @@ export const CustomerForm = ({
     });
   };
 
-  /*
-  const validateMany = (validators, fields) =>
-    Object.entries(fields).reduce(
-      (result, [name, value]) => ({
-        ...result,
-        [name]: validators[name](value)
-      }),
-      {}
-    );
-*/
-  const hasError = (validationErrors, fieldName) =>
-    validationErrors[fieldName] !== undefined;
-
-  const anyErrors = errors =>
-    Object.values(errors).some(error => error !== undefined);
 
   const renderError = fieldName => {
     if (hasError(validationErrors, fieldName)) {
