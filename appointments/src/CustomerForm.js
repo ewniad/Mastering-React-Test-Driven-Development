@@ -112,7 +112,9 @@ export const CustomerForm = ({
         id="phoneNumber"
         value={phoneNumber}
         onChange={handleChange}
+        onBlur={handleBlur}
       />
+      {renderError('phoneNumber')}
 
       <input type="submit" value="Add" />
     </form>
