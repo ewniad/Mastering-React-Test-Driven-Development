@@ -52,13 +52,13 @@ describe('CustomerForm', () => {
   });
 
   it('has a submit button', () => {
-    render(<CustomerForm />);
+    render(<CustomerForm {...validCustomer} />);
     const submitButton = element('input[type="submit"]');
     expect(submitButton).not.toBeNull();
   });
 
   it('calls fetch with the right properties when submitting data', async () => {
-    render(<CustomerForm />);
+    render(<CustomerForm {...validCustomer} />);
 
     await submit(form('customer'));
     expect(window.fetch).toHaveBeenCalledWith(
