@@ -206,7 +206,7 @@ describe('CustomerForm', () => {
     itSubmitsNewValue('phoneNumber', '67890');
   });
 
-  it.only('displays error after blur when first name field is blank', () => {
+  it('displays error after blur when first name field is blank', () => {
     render(<CustomerForm />);
 
     blur(
@@ -220,7 +220,7 @@ describe('CustomerForm', () => {
     );
   });
 
-  it.only('displays error after blur when last name field is blank', () => {
+  it('displays error after blur when last name field is blank', () => {
     act(() => {
       render(<CustomerForm />);
       blur(
@@ -234,6 +234,36 @@ describe('CustomerForm', () => {
     );
   });
 
+  describe.only('validation', () => {
+    const itInvalidatesFieldWithValue = (
+      fieldName,
+      value,
+      description
+    ) => {
+      it(`displays error after blur when ${fieldName} field is '${value}'`, () => {
+        render(<CustomerForm />);
+
+        blur(
+          field('customer', fieldName),
+          withEvent(fieldName, value)
+        );
+
+        expect(element('.error')).not.toBeNull();
+        expect(element('.error').textContent).toMatch(description);
+      });
+    };
+
+    itInvalidatesFieldWithValue(
+      'firstName',
+      ' ',
+      'First name is required'
+    );
+    itInvalidatesFieldWithValue(
+      'lastName',
+      ' ',
+      'Last name is required'
+    );
+  });
 
 });
 
