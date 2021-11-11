@@ -276,6 +276,14 @@ describe('CustomerForm', () => {
       'Only numbers, spaces and these symbols are allowed: ( ) + -'
     );
 
+    it('accepts standard phone number characters when validating', () => {
+      render(<CustomerForm />);
+      blur(
+        element("[name='phoneNumber']"),
+        withEvent('phoneNumber', '0123456789+()- ')
+      );
+      expect(element('.error')).toBeNull();
+    });
 
 });
 
