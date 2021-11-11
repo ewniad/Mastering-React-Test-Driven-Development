@@ -262,4 +262,12 @@ describe('CustomerForm', () => {
       expect(element('.error')).toBeNull();
     });
   });
+
+    it.skip('does not submit the form when there are validation errors', async () => {
+      render(<CustomerForm />);
+
+      await submit(form('customer'));
+      expect(window.fetch).not.toHaveBeenCalled();
+    });
+
 });

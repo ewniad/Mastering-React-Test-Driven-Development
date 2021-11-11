@@ -56,6 +56,15 @@ export const CustomerForm = ({
     });
   };
 
+  const validateMany = fields =>
+    Object.entries(fields).reduce(
+      (result, [name, value]) => ({
+        ...result,
+        [name]: validators[name](value)
+      }),
+      {}
+    );
+
   const hasError = fieldName =>
     validationErrors[fieldName] !== undefined;
 
