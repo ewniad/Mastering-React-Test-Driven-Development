@@ -66,12 +66,15 @@ export const CustomerForm = ({
     e.preventDefault();
     const validationResult = validateMany(validators, customer);
     if (!anyErrors(validationResult)) {
+      //setSubmitting(true);
       const result = await window.fetch('/customers', {
         method: 'POST',
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(customer)
       });
+      //setSubmitting(false);
+
       if (result.ok) {
         setError(false);
         const customerWithId = await result.json();
@@ -127,10 +130,18 @@ export const CustomerForm = ({
       {renderError('phoneNumber')}
 
       <input type="submit" value="Add" />
+        <span className="submittingIndicator" />
     </form>
   );
+      /*
+      {submitting ? (
+        <span className="submittingIndicator" />
+      ) : null}
+      */
 };
 
 CustomerForm.defaultProps = {
   onSave: () => {}
 };
+
+
