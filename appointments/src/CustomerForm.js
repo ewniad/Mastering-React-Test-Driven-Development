@@ -33,7 +33,8 @@ export const CustomerForm = ({
 
   const handleBlur = ({ target }) => {
     const validators = {
-      firstName: required('First name is required')
+      firstName: required('First name is required'),
+      lastName:  required('Last name is required')
     };
     const result = validators[target.name](target.value);
     setValidationErrors({
@@ -93,7 +94,9 @@ export const CustomerForm = ({
         id="lastName"
         value={lastName}
         onChange={handleChange}
+        onBlur={handleBlur}
       />
+      {renderError('lastName')}
 
       <label htmlFor="phoneNumber">Phone number</label>
       <input

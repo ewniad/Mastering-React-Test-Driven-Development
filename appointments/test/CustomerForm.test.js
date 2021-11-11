@@ -7,6 +7,7 @@ import {
 } from './spyHelpers';
 import { createContainer, withEvent } from './domManipulators';
 import { CustomerForm } from '../src/CustomerForm';
+import { act } from 'react-dom/test-utils';
 
 describe('CustomerForm', () => {
   let render,
@@ -218,6 +219,24 @@ describe('CustomerForm', () => {
       'First name is required'
     );
   });
+
+  it.only('displays error after blur when last name field is blank', () => {
+    //act(() => {
+      render(<CustomerForm />);
+
+      blur(
+        field('customer', 'lastName'),
+        withEvent('lastName', ' ')
+      );
+
+      expect(element('.error')).not.toBeNull();
+      expect(element('.error').textContent).toMatch(
+        'Last name is required'
+      );
+    });
+
+  //});
+
 });
 
 
