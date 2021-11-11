@@ -37,7 +37,6 @@ export const CustomerForm = ({
       [target.name]: target.value
     }));
 
-  const handleBlur = ({ target }) => {
     const validators = {
       firstName: required('First name is required'),
       lastName: required('Last name is required'),
@@ -49,6 +48,8 @@ export const CustomerForm = ({
         )
       )
     };
+
+  const handleBlur = ({ target }) => {
     const result = validators[target.name](target.value);
     setValidationErrors({
       ...validationErrors,
