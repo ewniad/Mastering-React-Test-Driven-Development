@@ -76,6 +76,9 @@ export const CustomerForm = ({
         setError(false);
         const customerWithId = await result.json();
         onSave(customerWithId);
+      } else if (result.status === 422) {
+        const response = await result.json();
+        setValidationErrors(response.errors);
       } else {
         setError(true);
       }
@@ -83,6 +86,9 @@ export const CustomerForm = ({
       setValidationErrors(validationResult);
     }
   };
+
+
+
 
   return (
     <form id="customer" onSubmit={handleSubmit}>
