@@ -54,7 +54,7 @@ describe('AppointmentForm', () => {
   const startsAtField = index =>
     elements(`input[name="startsAt"]`)[index];
 
-  it('renders a form', () => {
+  it.only('renders a form', () => {
     render(<AppointmentForm />);
     expect(form('appointment')).not.toBeNull();
   });

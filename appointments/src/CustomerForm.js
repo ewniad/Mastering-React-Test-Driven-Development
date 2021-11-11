@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+/*
 const required = description => value =>
   !value || value.trim() === '' ? description : undefined;
 
@@ -11,6 +12,15 @@ const list = (...validators) => value =>
     (result, validator) => result || validator(value),
     undefined
   );
+*/
+import {
+  required,
+  match,
+  list,
+  hasError,
+  validateMany,
+  anyErrors
+} from './formValidation';
 
 const Error = () => (
   <div className="error">An error occurred during save.</div>
@@ -50,14 +60,18 @@ export const CustomerForm = ({
   };
 
   const handleBlur = ({ target }) => {
-    const result = validators[target.name](target.value);
+    //const result = validators[target.name](target.value);
+    const result = validateMany(validators, {
+      [target.name]: target.value
+    });
     setValidationErrors({
       ...validationErrors,
       [target.name]: result
     });
   };
 
-  const validateMany = fields =>
+  /*
+  const validateMany = (validators, fields) =>
     Object.entries(fields).reduce(
       (result, [name, value]) => ({
         ...result,
@@ -66,14 +80,15 @@ export const CustomerForm = ({
       {}
     );
 
-  const hasError = fieldName =>
+  const hasError = (validationErrors, fieldName) =>
     validationErrors[fieldName] !== undefined;
 
   const anyErrors = errors =>
     Object.values(errors).some(error => error !== undefined);
+    */
 
   const renderError = fieldName => {
-    if (hasError(fieldName)) {
+    if (hasError(validationErrors, fieldName)) {
       return (
         <span className="error">
           {validationErrors[fieldName]}
@@ -84,7 +99,7 @@ export const CustomerForm = ({
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const validationResult = validateMany(customer);
+    const validationResult = validateMany(validators, customer);
     if (!anyErrors(validationResult)) {
       const result = await window.fetch('/customers', {
         method: 'POST',
