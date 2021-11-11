@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 
-//const required = value =>
-  //!value || value.trim() === '' ? 'First name is required' : undefined;
 const required = description => value =>
   !value || value.trim() === '' ? description : undefined;
+
+const match = (re, description) => value =>
+  !value.match(re) ? description : undefined;
+
+const list = (...validators) => value =>
+  validators.reduce(
+    (result, validator) => result || validator(value),
+    undefined
+  );
 
 
 const Error = () => (
