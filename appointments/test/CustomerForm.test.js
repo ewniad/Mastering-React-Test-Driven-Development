@@ -221,21 +221,19 @@ describe('CustomerForm', () => {
   });
 
   it.only('displays error after blur when last name field is blank', () => {
-    //act(() => {
+    act(() => {
       render(<CustomerForm />);
-
       blur(
         field('customer', 'lastName'),
         withEvent('lastName', ' ')
       );
-
-      expect(element('.error')).not.toBeNull();
-      expect(element('.error').textContent).toMatch(
-        'Last name is required'
-      );
     });
+    expect(element('.error')).not.toBeNull();
+    expect(element('.error').textContent).toMatch(
+      'Last name is required'
+    );
+  });
 
-  //});
 
 });
 
