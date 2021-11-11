@@ -54,11 +54,11 @@ export const CustomerForm = ({
     }
   };
 
-  const hasFirstNameError = fieldName =>
+  const hasError = fieldName =>
     validationErrors[fieldName] !== undefined;
 
-  const renderFirstNameError = fieldName => {
-    if (hasFirstNameError(fieldName)) {
+  const renderError = fieldName => {
+    if (hasError(fieldName)) {
       return (
         <span className="error">
           {validationErrors[fieldName]}
@@ -79,7 +79,7 @@ export const CustomerForm = ({
         onChange={handleChange}
         onBlur={handleBlur}
       />
-      {renderFirstNameError('firstName')}
+      {renderError('firstName')}
 
       <label htmlFor="lastName">Last name</label>
       <input
