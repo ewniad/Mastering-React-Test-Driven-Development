@@ -30,7 +30,11 @@ export const CustomerForm = ({
     }));
 
   const handleBlur = ({ target }) => {
-    const result = required(target.value);
+    const validators = {
+      firstName: required
+    };
+    //const result = required(target.value);
+    const result = validators[target.name](target.value);
     setValidationErrors({
       ...validationErrors,
       [target.name]: result
