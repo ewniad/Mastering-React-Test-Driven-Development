@@ -39,14 +39,16 @@ export const CustomerForm = ({
   };
 
   const handleBlur = ({ target }) => {
-    const result = validators[target.name](target.value);
+    const result = validateMany(validators, {
+      [target.name]: target.value
+    });
     setValidationErrors({
       ...validationErrors,
       [target.name]: result
     });
   };
 
-  const validateMany = fields =>
+  const validateMany = (validators, fields) =>
     Object.entries(fields).reduce(
       (result, [name, value]) => ({
         ...result,
@@ -73,7 +75,7 @@ export const CustomerForm = ({
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const validationResult = validateMany(customer);
+    const validationResult = validateMany(validators, customer);
     if (!anyErrors(validationResult)) {
       const result = await window.fetch('/customers', {
         method: 'POST',

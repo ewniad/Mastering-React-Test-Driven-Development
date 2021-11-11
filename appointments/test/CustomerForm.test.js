@@ -57,7 +57,7 @@ describe('CustomerForm', () => {
     expect(submitButton).not.toBeNull();
   });
 
-  it('calls fetch with the right properties when submitting data', async () => {
+  it.only('calls fetch with the right properties when submitting data', async () => {
     render(<CustomerForm {...validCustomer} />);
     await submit(form('customer'));
     expect(window.fetch).toHaveBeenCalledWith(
