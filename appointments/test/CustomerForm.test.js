@@ -171,7 +171,7 @@ describe('CustomerForm', () => {
   const itSubmitsNewValue = (fieldName, value) =>
     it('saves new value when submitted', async () => {
       render(
-        <CustomerForm {...{ [fieldName]: 'existingValue' }} />
+        <CustomerForm {...validCustomer} {...{ [fieldName]: 'existingValue' }} />
       );
       change(
         field('customer', fieldName),
