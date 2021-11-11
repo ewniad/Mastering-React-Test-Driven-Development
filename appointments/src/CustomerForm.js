@@ -37,17 +37,17 @@ export const CustomerForm = ({
       [target.name]: target.value
     }));
 
-    const validators = {
-      firstName: required('First name is required'),
-      lastName: required('Last name is required'),
-      phoneNumber: list(
-        required('Phone number is required'),
-        match(
-          /^[0-9+()\- ]*$/,
-          'Only numbers, spaces and these symbols are allowed: ( ) + -'
-        )
+  const validators = {
+    firstName: required('First name is required'),
+    lastName: required('Last name is required'),
+    phoneNumber: list(
+      required('Phone number is required'),
+      match(
+        /^[0-9+()\- ]*$/,
+        'Only numbers, spaces and these symbols are allowed: ( ) + -'
       )
-    };
+    )
+  };
 
   const handleBlur = ({ target }) => {
     const result = validators[target.name](target.value);
@@ -69,6 +69,9 @@ export const CustomerForm = ({
   const hasError = fieldName =>
     validationErrors[fieldName] !== undefined;
 
+  const anyErrors = errors =>
+    Object.values(errors).some(error => error !== undefined);
+
   const renderError = fieldName => {
     if (hasError(fieldName)) {
       return (
@@ -81,18 +84,23 @@ export const CustomerForm = ({
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const result = await window.fetch('/customers', {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(customer)
-    });
-    if (result.ok) {
-      setError(false);
-      const customerWithId = await result.json();
-      onSave(customerWithId);
+    const validationResult = validateMany(customer);
+    if (!anyErrors(validationResult)) {
+      const result = await window.fetch('/customers', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(customer)
+      });
+      if (result.ok) {
+        setError(false);
+        const customerWithId = await result.json();
+        onSave(customerWithId);
+      } else {
+        setError(true);
+      }
     } else {
-      setError(true);
+      setValidationErrors(validationResult);
     }
   };
 
