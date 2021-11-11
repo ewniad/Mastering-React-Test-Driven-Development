@@ -10,7 +10,6 @@ export const list = (...validators) => value =>
     undefined
   );
 
-/*
 export const validateMany = (validators, fields) =>
   Object.entries(fields).reduce(
     (result, [name, value]) => ({
@@ -20,6 +19,7 @@ export const validateMany = (validators, fields) =>
     {}
   );
 
+/*
 export const hasError = (validationErrors, fieldName) =>
   validationErrors[fieldName] !== undefined;
 

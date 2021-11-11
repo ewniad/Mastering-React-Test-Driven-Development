@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { required, match, list } from './formValidation';
+import {
+  required,
+  match,
+  list,
+  validateMany
+} from './formValidation';
 
 const Error = () => (
   <div className="error">An error occurred during save.</div>
@@ -48,6 +53,7 @@ export const CustomerForm = ({
     });
   };
 
+  /*
   const validateMany = (validators, fields) =>
     Object.entries(fields).reduce(
       (result, [name, value]) => ({
@@ -56,7 +62,7 @@ export const CustomerForm = ({
       }),
       {}
     );
-
+*/
   const hasError = (validationErrors, fieldName) =>
     validationErrors[fieldName] !== undefined;
 
