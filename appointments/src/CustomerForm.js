@@ -1,16 +1,5 @@
 import React, { useState } from 'react';
-
-const required = description => value =>
-  !value || value.trim() === '' ? description : undefined;
-
-const match = (re, description) => value =>
-  !value.match(re) ? description : undefined;
-
-const list = (...validators) => value =>
-  validators.reduce(
-    (result, validator) => result || validator(value),
-    undefined
-  );
+import { required, match, list } from './formValidation';
 
 const Error = () => (
   <div className="error">An error occurred during save.</div>
