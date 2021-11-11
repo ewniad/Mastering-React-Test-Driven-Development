@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 
+const required = value =>
+  !value || value.trim() === '' ? 'First name is required' : undefined;
+
+
 const Error = () => (
   <div className="error">An error occurred during save.</div>
 );
@@ -11,6 +15,7 @@ export const CustomerForm = ({
   onSave
 }) => {
   const [error, setError] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
 
   const [customer, setCustomer] = useState({
     firstName,
@@ -23,6 +28,14 @@ export const CustomerForm = ({
       ...customer,
       [target.name]: target.value
     }));
+
+  const handleBlur = ({ target }) => {
+    const result = required(target.value);
+    setValidationErrors({
+      ...validationErrors,
+      [target.name]: result
+    });
+  };
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -41,6 +54,19 @@ export const CustomerForm = ({
     }
   };
 
+  const hasFirstNameError = () =>
+    validationErrors.firstName !== undefined;
+
+  const renderFirstNameError = () => {
+    if (hasFirstNameError()) {
+      return (
+        <span className="error">
+          {validationErrors.firstName}
+        </span>
+      );
+    }
+  };
+
   return (
     <form id="customer" onSubmit={handleSubmit}>
       {error ? <Error /> : null}
@@ -51,7 +77,9 @@ export const CustomerForm = ({
         id="firstName"
         value={firstName}
         onChange={handleChange}
+        onBlur={handleBlur}
       />
+      {renderFirstNameError()}
 
       <label htmlFor="lastName">Last name</label>
       <input

@@ -16,7 +16,8 @@ describe('CustomerForm', () => {
     labelFor,
     element,
     change,
-    submit;
+    submit,
+    blur;
 
   beforeEach(() => {
     ({
@@ -203,19 +204,20 @@ describe('CustomerForm', () => {
     itSubmitsExistingValue('phoneNumber', '12345');
     itSubmitsNewValue('phoneNumber', '67890');
   });
+
+  it.only('displays error after blur when first name field is blank', () => {
+    render(<CustomerForm />);
+
+    blur(
+      field('customer', 'firstName'),
+      withEvent('firstName', ' ')
+    );
+
+    expect(element('.error')).not.toBeNull();
+    expect(element('.error').textContent).toMatch(
+      'First name is required'
+    );
+  });
 });
 
 
-it.only('displays error after blur when first name field is blank', () => {
-  render(<CustomerForm />);
-
-  blur(
-    field('customer', fieldName),
-    withEvent('firstName', ' ')
-  );
-
-  expect(element('.error')).not.toBeNull();
-  expect(element('.error').textContent).toMatch(
-    'First name is required'
-  );
-});
