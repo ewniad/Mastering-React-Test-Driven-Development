@@ -263,7 +263,7 @@ describe('CustomerForm', () => {
     });
   });
 
-    it.skip('does not submit the form when there are validation errors', async () => {
+    it('does not submit the form when there are validation errors', async () => {
       render(<CustomerForm />);
 
       await submit(form('customer'));
