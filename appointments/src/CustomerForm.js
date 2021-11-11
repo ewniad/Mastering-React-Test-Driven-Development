@@ -55,14 +55,14 @@ export const CustomerForm = ({
       {}
     );
 
-  const hasError = fieldName =>
+  const hasError = (validationErrors, fieldName) =>
     validationErrors[fieldName] !== undefined;
 
   const anyErrors = errors =>
     Object.values(errors).some(error => error !== undefined);
 
   const renderError = fieldName => {
-    if (hasError(fieldName)) {
+    if (hasError(validationErrors, fieldName)) {
       return (
         <span className="error">
           {validationErrors[fieldName]}
