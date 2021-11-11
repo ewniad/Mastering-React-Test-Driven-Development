@@ -8,6 +8,12 @@ import {
 import { createContainer, withEvent } from './domManipulators';
 import { CustomerForm } from '../src/CustomerForm';
 
+const validCustomer = {
+  firstName: 'first',
+  lastName: 'last',
+  phoneNumber: '123456789'
+};
+
 describe('CustomerForm', () => {
   let render,
     container,
@@ -41,7 +47,7 @@ describe('CustomerForm', () => {
   });
 
   it('renders a form', () => {
-    render(<CustomerForm />);
+    render(<CustomerForm {...validCustomer} />);
     expect(form('customer')).not.toBeNull();
   });
 
