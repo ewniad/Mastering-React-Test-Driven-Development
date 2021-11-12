@@ -17,6 +17,11 @@ const SearchButtons = ({ handleNext, handlePrevious }) => (
 */
 const SearchButtons = ({handleNext}) => (
   <div className="button-bar">
+    <button
+      role="button"
+      id="previous-page">
+      Previous
+    </button>
     <button role="button" id="next-page" onClick={handleNext}>
       Next
     </button>
@@ -41,16 +46,6 @@ export const CustomerSearch = () => {
     const after = customers[customers.length - 1].id;
     const newQueryString = `?after=${after}`;
     setQueryString(newQueryString);
-    //const url = `/customers?after=${after}`;
-    //const result = await window.fetch(url, {
-      //method: 'GET',
-      //credentials: 'same-origin',
-      //headers: { 'Content-Type': 'application/json' }
-    //});
-    //setCustomers(await result.json());
-    //const queryString = `?after=${after}`;
-    //setQueryStrings([...queryStrings, queryString]);
-  //}, [customers, queryStrings]);
   }, [customers]);
 
   useEffect(() => {
