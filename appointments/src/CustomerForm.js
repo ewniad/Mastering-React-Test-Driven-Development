@@ -74,7 +74,7 @@ export const CustomerForm = ({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(customer)
       });
-      //setSubmitting(false);
+      setSubmitting(false);
 
       if (result.ok) {
         setError(false);
