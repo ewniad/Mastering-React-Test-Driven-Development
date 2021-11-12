@@ -142,4 +142,13 @@ describe('CustomerSearch', () => {
       expect.anything()
     );
   });
+
+  it('has a search input field with a placeholder', async () => {
+    await renderAndWait(<CustomerSearch />);
+    expect(element('input')).not.toBeNull();
+    expect(element('input').getAttribute('placeholder')).toEqual(
+      'Enter filter text'
+    );
+  });
+
 });

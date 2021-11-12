@@ -60,6 +60,7 @@ export const CustomerSearch = () => {
 
   return (
     <React.Fragment>
+      <input placeholder="Enter filter text" />
       <SearchButtons
         handleNext={handleNext}
         handlePrevious={handlePrevious}
