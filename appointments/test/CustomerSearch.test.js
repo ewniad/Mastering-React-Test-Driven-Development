@@ -42,7 +42,6 @@ describe('CustomerSearch', () => {
     ]);
   });
 
-  /*
   it('fetches all customer data when component mounts', async () => {
     await renderAndWait(<CustomerSearch />);
     expect(window.fetch).toHaveBeenCalledWith('/customers', {
@@ -52,6 +51,7 @@ describe('CustomerSearch', () => {
     });
   });
 
+  /*
   it('renders all customer data in a table row', async () => {
     window.fetch.mockReturnValue(fetchResponseOk(oneCustomer));
     await renderAndWait(<CustomerSearch />);

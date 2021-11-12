@@ -1,8 +1,17 @@
-import React from 'react';
-
-//export const CustomerSearch = () => null;
+import React, { useEffect, useState } from 'react';
 
 export const CustomerSearch = () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await window.fetch('/customers', {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' }
+      });
+    };
+    fetchData();
+  }, []);
+
   return (
     <table>
       <thead>
@@ -18,7 +27,6 @@ export const CustomerSearch = () => {
 };
 
 /*
-import React, { useEffect, useState } from 'react';
 
 const CustomerRow = ({ customer }) => (
   <tr>
