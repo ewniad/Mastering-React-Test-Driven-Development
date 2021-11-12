@@ -42,16 +42,17 @@ const CustomerRow = ({ customer }) => (
 export const CustomerSearch = () => {
   const [customers, setCustomers] = useState([]);
   const [queryString, setQueryString] = useState([]);
+  const [previousQueryString, setPreviousQueryString] = useState('');
 
-  const handleNext = useCallback(async () => {
+  const handleNext = useCallback((queryString) => {
     const after = customers[customers.length - 1].id;
     const newQueryString = `?after=${after}`;
+    setPreviousQueryString(queryString);
     setQueryString(newQueryString);
-  }, [customers]);
+  }, [customers, queryString]);
 
-  const handlePrevious = useCallback(
-    //() => setQueryStrings(queryStrings.slice(0, -1)),
-    () => setQueryString(''), []
+  const handlePrevious = useCallback(async () =>
+    setQueryString(previousQueryString), [previousQueryString]
   );
 
   useEffect(() => {
