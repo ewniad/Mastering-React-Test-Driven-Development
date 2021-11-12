@@ -34,49 +34,10 @@ export const CustomerSearch = () => {
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody>
-        {customers[0] ? (
-          <CustomerRow customer={customers[0]} />
-		) : null }
-      </tbody>
+      <tbody>{
+	  	customers.map(customer => (
+          <CustomerRow customer={customer} key={customer.id} />))
+		}</tbody>
 	</table>
   );
 };
-
-/*
-
-export const CustomerSearch = () => {
-  const [customers, setCustomers] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await window.fetch('/customers', {
-        method: 'GET',
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' }
-      });
-      setCustomers(await result.json());
-    };
-
-    fetchData();
-  }, []);
-
-  return (
-    <table>
-      <thead>
-        <tr>
-          <th>First name</th>
-          <th>Last name</th>
-          <th>Phone number</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {customers.map(customer => (
-          <CustomerRow customer={customer} key={customer.id} />
-        ))}
-      </tbody>
-    </table>
-  );
-};
-*/
