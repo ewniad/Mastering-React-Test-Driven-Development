@@ -13,6 +13,8 @@ const twoCustomers = [
   { id: 2, firstName: 'C', lastName: 'D', phoneNumber: '2' }
 ];
 
+const tenCustomers = Array.from('0123456789', id => ({ id }));
+
 describe('CustomerSearch', () => {
   let renderAndWait, container, element, elements, clickAndWait;
 
@@ -68,6 +70,16 @@ describe('CustomerSearch', () => {
   it('has a next button', async () => {
     await renderAndWait(<CustomerSearch />);
     expect(element('button#next-page')).not.toBeNull();
+  });
+
+  it('requests next page of data when next button is clicked', async () => {
+    window.fetch.mockReturnValue(fetchResponseOk(tenCustomers));
+    await renderAndWait(<CustomerSearch />);
+    await clickAndWait(element('button#next-page'));
+    expect(window.fetch).toHaveBeenLastCalledWith(
+      '/customers?after=9',
+      expect.anything()
+    );
   });
 
 });

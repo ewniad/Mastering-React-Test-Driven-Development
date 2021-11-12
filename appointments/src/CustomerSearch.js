@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 /*
 const SearchButtons = ({ handleNext, handlePrevious }) => (
@@ -15,9 +15,9 @@ const SearchButtons = ({ handleNext, handlePrevious }) => (
   </div>
 );
 */
-const SearchButtons = () => (
+const SearchButtons = ({handleNext}) => (
   <div className="button-bar">
-    <button role="button" id="next-page">
+    <button role="button" id="next-page" onClick={handleNext}>
       Next
     </button>
   </div>
@@ -36,6 +36,19 @@ const CustomerRow = ({ customer }) => (
 export const CustomerSearch = () => {
   const [customers, setCustomers] = useState([]);
 
+  const handleNext = useCallback(() => {
+    const after = customers[customers.length - 1].id;
+    const url = `/customers?after=${after}`;
+    window.fetch(url, {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    //const queryString = `?after=${after}`;
+    //setQueryStrings([...queryStrings, queryString]);
+  //}, [customers, queryStrings]);
+  }, [customers]);
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await window.fetch('/customers', {
@@ -51,7 +64,7 @@ export const CustomerSearch = () => {
 
   return (
     <React.Fragment>
-      <SearchButtons />
+      <SearchButtons handleNext={handleNext} />
       <table>
         <thead>
           <tr>
