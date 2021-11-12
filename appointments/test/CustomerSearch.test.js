@@ -98,4 +98,15 @@ describe('CustomerSearch', () => {
     expect(element('button#previous-page')).not.toBeNull();
   });
 
+  it('moves back to first page when previous button is clicked', async () => {
+    window.fetch.mockReturnValue(fetchResponseOk(tenCustomers));
+    await renderAndWait(<CustomerSearch />);
+    await clickAndWait(element('button#next-page'));
+    await clickAndWait(element('button#previous-page'));
+    expect(window.fetch).toHaveBeenLastCalledWith(
+      '/customers',
+      expect.anything()
+    );
+  });
+
 });
