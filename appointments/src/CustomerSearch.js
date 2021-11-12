@@ -36,14 +36,15 @@ const CustomerRow = ({ customer }) => (
 export const CustomerSearch = () => {
   const [customers, setCustomers] = useState([]);
 
-  const handleNext = useCallback(() => {
+  const handleNext = useCallback(async () => {
     const after = customers[customers.length - 1].id;
     const url = `/customers?after=${after}`;
-    window.fetch(url, {
+    const result = await window.fetch(url, {
       method: 'GET',
       credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' }
     });
+    setCustomers(await result.json());
     //const queryString = `?after=${after}`;
     //setQueryStrings([...queryStrings, queryString]);
   //}, [customers, queryStrings]);
