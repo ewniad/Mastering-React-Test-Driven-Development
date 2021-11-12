@@ -35,16 +35,19 @@ const CustomerRow = ({ customer }) => (
 
 export const CustomerSearch = () => {
   const [customers, setCustomers] = useState([]);
+  const [queryString, setQueryString] = useState([]);
 
   const handleNext = useCallback(async () => {
     const after = customers[customers.length - 1].id;
-    const url = `/customers?after=${after}`;
-    const result = await window.fetch(url, {
-      method: 'GET',
-      credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' }
-    });
-    setCustomers(await result.json());
+    const newQueryString = `?after=${after}`;
+    setQueryString(newQueryString);
+    //const url = `/customers?after=${after}`;
+    //const result = await window.fetch(url, {
+      //method: 'GET',
+      //credentials: 'same-origin',
+      //headers: { 'Content-Type': 'application/json' }
+    //});
+    //setCustomers(await result.json());
     //const queryString = `?after=${after}`;
     //setQueryStrings([...queryStrings, queryString]);
   //}, [customers, queryStrings]);
@@ -52,7 +55,9 @@ export const CustomerSearch = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await window.fetch('/customers', {
+      const result = await window.fetch(
+        `/customers${queryString}`,
+        {
         method: 'GET',
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' }
@@ -61,7 +66,7 @@ export const CustomerSearch = () => {
     };
 
     fetchData();
-  }, []);
+  }, [queryString]);
 
   return (
     <React.Fragment>
