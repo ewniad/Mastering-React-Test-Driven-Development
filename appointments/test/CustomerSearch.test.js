@@ -64,7 +64,7 @@ describe('CustomerSearch', () => {
     expect(rows[1].childNodes[0].textContent).toEqual('C');
   });
 
-  it.skip('has a next button', async () => {
+  it('has a next button', async () => {
     await renderAndWait(<CustomerSearch />);
     expect(element('button#next-page')).not.toBeNull();
   });
