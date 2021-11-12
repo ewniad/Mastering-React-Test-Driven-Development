@@ -20,7 +20,7 @@ const anotherTenCustomers = Array.from('ABCDEFGHIJ', id => ({
 }));
 
 describe('CustomerSearch', () => {
-  let renderAndWait, container, element, elements, clickAndWait;
+  let renderAndWait, container, element, elements, clickAndWait, changeAndWait;
 
   beforeEach(() => {
     ({
@@ -28,7 +28,8 @@ describe('CustomerSearch', () => {
       container,
       element,
       elements,
-      clickAndWait
+      clickAndWait,
+      changeAndWait
     } = createContainer());
     jest
       .spyOn(window, 'fetch')
