@@ -26,6 +26,11 @@ const CustomerRow = ({ customer }) => (
 export const CustomerSearch = () => {
   const [customers, setCustomers] = useState([]);
   const [queryStrings, setQueryStrings] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearchTextChanged = ({ target: { value } }) => {
+    setSearchTerm(value);
+  };
 
   const handleNext = useCallback(() => {
     const after = customers[customers.length - 1].id;
@@ -41,9 +46,11 @@ export const CustomerSearch = () => {
   useEffect(() => {
     const fetchData = async () => {
       let queryString = '';
-      if (queryStrings.length > 0)
+      if (searchTerm !== '') {
+        queryString = `?searchTerm=${searchTerm}`;
+      } else if (queryStrings.length > 0) {
         queryString = queryStrings[queryStrings.length - 1];
-
+      }
       const result = await window.fetch(
         `/customers${queryString}`,
         {
@@ -56,11 +63,15 @@ export const CustomerSearch = () => {
     };
 
     fetchData();
-  }, [queryStrings]);
+  }, [queryStrings, searchTerm]);
 
   return (
     <React.Fragment>
-      <input placeholder="Enter filter text" />
+      <input
+        value={searchTerm}
+        onChange={handleSearchTextChanged}
+        placeholder="Enter filter text"
+      />
       <SearchButtons
         handleNext={handleNext}
         handlePrevious={handlePrevious}

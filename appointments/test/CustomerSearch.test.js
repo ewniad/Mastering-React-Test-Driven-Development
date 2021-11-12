@@ -151,4 +151,13 @@ describe('CustomerSearch', () => {
     );
   });
 
+  it.only('performs search when search term is changed', async () => {
+    await renderAndWait(<CustomerSearch />);
+    await changeAndWait(element('input'), withEvent('input', 'name'));
+    expect(window.fetch).toHaveBeenLastCalledWith(
+      '/customers?searchTerm=name',
+      expect.anything()
+    );
+  });
+
 });
