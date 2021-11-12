@@ -4,11 +4,11 @@ import { createContainer, withEvent } from './domManipulators';
 import { CustomerSearch } from '../src/CustomerSearch';
 import { fetchResponseOk } from './spyHelpers';
 
-/*
 const oneCustomer = [
   { id: 1, firstName: 'A', lastName: 'B', phoneNumber: '1' }
 ];
 
+/*
 const twoCustomers = [
   { id: 1, firstName: 'A', lastName: 'B', phoneNumber: '1' },
   { id: 2, firstName: 'C', lastName: 'D', phoneNumber: '2' }
@@ -51,7 +51,6 @@ describe('CustomerSearch', () => {
     });
   });
 
-  /*
   it('renders all customer data in a table row', async () => {
     window.fetch.mockReturnValue(fetchResponseOk(oneCustomer));
     await renderAndWait(<CustomerSearch />);
@@ -61,6 +60,7 @@ describe('CustomerSearch', () => {
     expect(columns[2].textContent).toEqual('1');
   });
 
+  /*
   it('renders multiple customer rows', async () => {
     window.fetch.mockReturnValue(fetchResponseOk(twoCustomers));
     await renderAndWait(<CustomerSearch />);
