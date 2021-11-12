@@ -14,14 +14,15 @@ const twoCustomers = [
 ];
 
 describe('CustomerSearch', () => {
-  let renderAndWait, container, element, elements;
+  let renderAndWait, container, element, elements, clickAndWait;
 
   beforeEach(() => {
     ({
       renderAndWait,
       container,
       element,
-      elements
+      elements,
+      clickAndWait
     } = createContainer());
     jest
       .spyOn(window, 'fetch')
